@@ -1,0 +1,36 @@
+.file_info.well.well-sm
+	%table
+		%tr
+			%td="Dateiname:"
+			%td{style: "padding-left: 10px; word-break: break-all;"}=context.file.get('basename')
+		%tr
+			%td="Dateigröße:"
+			%td{style: "padding-left: 10px"}=context.file.get('size_as_string')
+		%tr	
+			%td="Erstellt am:"
+			%td{style: "padding-left: 10px"}=context.file.get('ctime')
+.file_action
+	-if not context.file.isDirectory()
+		%button.btn.btn-default.btn-sm{onclick: "AC.Fancytree.download('#{context.file.get('path').chomp("/")}', 'file');"}
+			!=context.helper.icon_tag('download', ' Download')
+	-else
+		%ul.nav.nav-pills.nav-stacked
+			%li
+				.btn-group
+					%button.btn.btn-default.btn-sm{type: 'button'}
+						!=context.helper.icon_tag('upload')
+						="Dateien hochladen"
+			%li
+				-path = context.file.get('path').chomp("/")
+				.btn-group
+					%button.btn.btn-default.btn-sm.download_file_buttons{type: 'button', "data-type": "zip", 'data-path': path}
+						!=context.helper.icon_tag('download')
+						="Download zip"
+					%button.btn.btn-default.btn-sm.dropdown-toggle{type: 'button', "data-toggle": "dropdown"}
+						%span.caret
+						%span.sr-only
+					%ul.dropdown-menu.dropdown-menu{role: 'menu'}
+						%li!=context.helper.link_to context.helper.icon_tag('download', ' Download zip'), '#', "data-type": "zip", 'data-path': path, class: 'download_file_buttons'
+						%li!=context.helper.link_to context.helper.icon_tag('download', ' Download tar'), '#', "data-type": "tar", 'data-path': path, class: 'download_file_buttons'
+						%li!=context.helper.link_to context.helper.icon_tag('download', ' Download tar.gz'), '#', "data-type": "gz", 'data-path': path, class: 'download_file_buttons'
+						%li!=context.helper.link_to context.helper.icon_tag('download', ' Download tar.bz2'), '#', "data-type": "bz2", 'data-path': path, class: 'download_file_buttons'

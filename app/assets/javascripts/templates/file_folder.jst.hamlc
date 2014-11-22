@@ -1,0 +1,17 @@
+%table.table.table-condensed.table-hover.files_table
+	%thead
+		%tr
+			%th{style: "width: 53%; text-align: left;"}= "Dateiname"
+			%th{style: "width: 15; padding-right: 2em"}= "Dateigröße"
+			%th{style: "width: 16%; padding-right: 1.7em"}= "Erstellt am"
+			%th{style: "width: 16%; padding-right: 1em"}= "Zuletzt geändert"
+	%tbody
+%div
+	%a#select_all_files{href: '#'}
+		%i.fa.fa-square-o=" select all"
+
+:javascript
+	$('.files_table').selectable({filter: 'tbody tr', distance: 1});
+	$('.files_table tbody').height($(window).height() - $('.files_table tbody').offset().top - 70)
+	folder_content_table_offset = $('.folder_content').offset().top;
+	$('.folder_content').height($(window).height() - folder_content_table_offset - 10)

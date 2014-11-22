@@ -1,15 +1,57 @@
-!!!
-%html
+!!! 5
+%html{:lang => 'en'}
   %head
-    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
-    %title= content_for?(:title) ? yield(:title) : 'Ac Home'
-    %meta{:name => "description", :content => "#{content_for?(:description) ? yield(:description) : 'Ac Home'}"}
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    %meta{:content => 'text/html; charset=utf-8', 'http-equiv' => 'Content-Type'}
+    %meta{:name => :viewport, :content => 'width=device-width,initial-scale=1'}
+    %title= @title.present? ? "#{@title} | Rails Admin" : "Rails Admin"
+    %link{rel: 'icon', type: "'image/#{File.extname('favicon.ico').gsub('.','')}'"}
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = csrf_meta_tags
-  %body
-    %header
-      = render 'layouts/navigation'
-    %main{:role => "main"}
-      = render 'layouts/messages'
-      = yield
+
+  %body{"data-current_user" => current_user.to_json, "data-Users" => User.all.map{|a| a}.to_json }
+    =render partial: 'layouts/navigation'
+
+    .container-fluid.main.main-wrapper
+      #alert-row.row
+        -#= {:error => 'danger', :warning => 'warning', :success => 'success', :notice => 'info'}.map do |type, class_name| flash[type.to_sym], :class => "alert alert-#{class_name} fade in", :bootstrap => true) }.join.html_safe
+        =flash[:notice]
+      .row-fluid
+        -if ['home', 'images'].include?(params[:controller])
+          .left-sidebar.col-md-3{style: "padding-left: 0px"}
+            =yield :left_sidebar
+        .content_wrapper{class: ['home', 'images'].include?(params[:controller]) ? 'col-md-9' : 'col-md-12'}
+          .load_content.hide
+            .load_icon
+              =icon_tag('spinner', '', ['spin', '5x'])
+            %h3='Lade Daten'
+          .content
+            =yield 
+
+/* %footer */
+//  .footer-wrapper.container
+//    %p.pull-left
+//      Copyright &copy;
+//      =Time.now.year
+//      Your Site - Powered by Rails v.#{Rails.version}
+//    %ul.pull-right.footer-links
+//      %li= link_to icon_tag(:home, 'web'), 'http://www.Railsrb.com', :target => :_blank, :class => 'footer-links-link'
+//     %li= link_to icon_tag(:heart, 'blog'), 'http://www.Railsrb.com/blog', :target => :_blank, :class => 'footer-links-link'
+//     %li= link_to icon_tag(:github, 'code'), 'https://github.com/Rails/Rails-framework', :target => :_blank, :class => 'footer-links-link'
+//     %li= link_to icon_tag(:twitter, 'twitter'), 'http://twitter.com/Railsrb', :target => :_blank, :class => 'footer-links-link'
+-if ['home', 'images'].include?(params[:controller])
+  :coffeescript
+    $(document).ready ()->
+      $('.left-sidebar').height $(window).height() - $('.left-sidebar').offset().top - 20
+      $('.load_content').height $(window).height() - $('.load_content').offset().top - 20
+
+      $('.left-sidebar').resizable autoHide:true, ghost: true, handles: 'e', stop: (event, ui)->
+        $('.left-sidebar').height($(window).height()-$('.left-sidebar').offset().top - 20)
+        new_gap =(ui.size.width - ui.originalSize.width)
+        if (new_gap < 0 )
+          $('.content').width($('.content').width()  + Math.abs(new_gap))
+        else
+          $('.content').width($('.content').width()  - Math.abs(new_gap))

@@ -1,0 +1,79 @@
+-content_for :left_sidebar do
+  %ul.nav.nav-pills.nav-stacked
+    -@images.each_with_index do |file, index|
+      %li.images_nav{class: index == 0 ? 'active' : ''}= link_to file.basename.to_s, '#', class: 'images_left_sidebar_link', 'data-file' => file.to_json(true)
+
+.thumb_images
+  -if @images.any?
+    -@images.first.images.each do |file, iterator|
+      .image.pull-left
+        =link_to image_tag("/files/show_image_thumb?file=#{file.path.to_s}", height: "150", width: "150"), "/files/show_image?file=#{file.path.to_s}", rel: "gallery-1", title: file.basename.to_s
+        .caption
+          =file.basename
+
+#fullscreenSlideshowContainer
+
+:javascript
+  $('.images_left_sidebar_link').on('click', function(){
+    new AC.Views.ImageView({model: $(this).data('file')})
+    $(this).parent().addClass('active').siblings().removeClass('active')
+  });
+
+  $(function(){
+
+    $('.thumb_images').height($(window).height() - $('.thumb_images').offset().top -20 )
+    // initialize the slideshow
+    $('.image img').fullscreenslides(); 
+    
+    // All events are bound to this container element
+    var fullscreen_container = $('#fullscreenSlideshowContainer');
+    
+    fullscreen_container.bind("init", function() { 
+        // The slideshow does not provide its own UI, so add your own
+        // check the fullscreenstyle.css for corresponding styles
+        fullscreen_container
+          .append('<div class="ui" id="fs-close">&times;</div>')
+          .append('<div class="ui" id="fs-loader"><i class="fa fa-spin fa-spinner"></i> Loading...</div>')
+          .append('<div class="ui" id="fs-prev">&lt;</div>')
+          .append('<div class="ui" id="fs-next">&gt;</div>')
+          .append('<div class="ui" id="fs-caption"><span></span></div>');
+        
+        // Bind to the ui elements and trigger slideshow events
+        $('#fs-prev').click(function(){
+          // You can trigger the transition to the previous slide
+          fullscreen_container.trigger("prevSlide");
+        });
+        $('#fs-next').click(function(){
+          // You can trigger the transition to the next slide
+          fullscreen_container.trigger("nextSlide");
+        });
+        $('#fs-close').click(function(){
+          // You can close the slide show like this:
+          fullscreen_container.trigger("close");
+        });
+        
+      })
+      // When a slide starts to load this is called
+      .bind("startLoading", function() { 
+        // show spinner
+        $('#fs-loader').show();
+      })
+      // When a slide stops to load this is called:
+      .bind("stopLoading", function() { 
+        // hide spinner
+        $('#fs-loader').hide();
+      })
+      // When a slide is shown this is called.
+      // The "loading" events are triggered only once per slide.
+      // The "start" and "end" events are called every time.
+      // Notice the "slide" argument:
+      .bind("startOfSlide", function(event, slide) { 
+        // set and show caption
+        $('#fs-caption span').text(slide.title);
+        $('#fs-caption').show();
+      })
+      // before a slide is hidden this is called:
+      .bind("endOfSlide", function(event, slide) { 
+        $('#fs-caption').hide();
+      });
+  });

@@ -1,0 +1,8 @@
+%tr{class: "folder_content_tr #{if context.file.isDirectory() then 'folder' else 'file'}"}
+	%td{style: "width: 51%; text-align: left;"}	
+		%span.file
+			!=context.helper.icon_tag(context.file.getIcon())
+			=context.file.get('basename')
+	%td{style: "width: 15%"}= context.file.get('size_as_string')
+	%td{style: "width: 17%"}= context.file.get('ctime')
+	%td{style: "width: 17%"}= context.file.get('mtime')

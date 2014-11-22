@@ -1,0 +1,3 @@
+.attachment.pull-left.attachment_image.img-thumbnail{'data-id' => attachment.id}
+	=link_to image_tag(attachment.thumb_url, class: 'thumb_image img-rounded', "data-type"=> attachment.file.content_type,'data-thumb' => attachment.thumb_url, 'data-gif'=> attachment.original_url, 'data-show_gif' => false, 'data-remote_url' => attachment.remote_url), attachment_show_path(attachment.id), 'data-show'=> attachment_show_path(attachment.id), class: 'attachment_thumb'
+	-#																																																																		url(:attachments, :show, id: attachment.id)

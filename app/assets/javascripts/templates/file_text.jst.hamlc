@@ -1,0 +1,13 @@
+%pre.text-preview
+
+:javascript
+	AC.Ajax.get('/files/text_preview', {file: "#{context.file.get('path')}"}, {success: function(response){
+		if(response.success){
+			$('.text-preview').html(response.html);
+			top_offset = $('.text-preview').offset().top;
+			$('.text-preview').css('overflow-y', 'scroll');
+			$('.text-preview').height($(window).height() - top_offset - 30)
+		}else{
+			AC.alert.error(response.error)
+		}
+	}});

@@ -1,0 +1,18 @@
+!!! 5
+%html{:lang => 'en'}
+  %head
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    %meta{:content => 'text/html; charset=utf-8', 'http-equiv' => 'Content-Type'}
+    %meta{:name => :viewport, :content => 'width=device-width,initial-scale=1'}
+    %title= @title.present? ? "#{@title} | Rails Admin" : "Rails Admin"
+    %link{rel: 'icon', type: "'image/#{File.extname('favicon.ico').gsub('.','')}'"}
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+
+  %body{"data-current_user" => current_user.to_json, "data-Users" => User.all.map{|a| a}.to_json }
+    .container-fluid.main.main-wrapper
+      .content
+        =yield

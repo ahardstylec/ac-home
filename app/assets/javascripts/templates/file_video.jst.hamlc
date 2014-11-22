@@ -1,0 +1,18 @@
+-path = "/files/stream_file?file=#{context.file.get('path')}"
+
+%video.file_video.img-thumbnail(controls autobuffer)
+	%source{src: path, type: context.file.get('mime_type')}
+	
+%img.video_thumb{src: "/files/video_thumb?file=#{context.file.get('path')}", style: "display: none"}
+!= context.helper.link_to context.helper.icon_tag('download','download'), path, class: 'download_video btn btn-default', style: "display: none"
+
+:javascript
+	top_offset = $('.file_video').offset().top;
+	$('.file_video').height($(window).height() - top_offset - 20);
+
+	can_play_string = $('.file_video')[0].canPlayType("#{context.file.get('mime_type')}").replace(/no/,'')
+	if(_.isEmpty(can_play_string)){
+		$('.file_video').hide()
+		$('.download_video').show()
+		$('.video_thumb').show()
+	}

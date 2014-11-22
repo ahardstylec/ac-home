@@ -1,0 +1,7 @@
+%li=link_to 'Bilder', images_path #url(:images, :index)
+%li=link_to 'Videos', movies_path #url(:movies, :index)
+%li=link_to 'Musik', musics_path #url(:music, :index)
+%li=link_to 'Suchen', search_path #url(:search, :index)
+-if true || current_user.username == 'andi'
+  %li=link_to 'Attachments', attachments_path(1), :title => "Attachments", 'data-toggle'=> "tooltip", 'data-placement'=>"bottom", class: 'attachment_index_link'
+

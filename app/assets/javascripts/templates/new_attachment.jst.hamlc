@@ -1,0 +1,17 @@
+.attachment_form
+	%img{src: '#', style: 'display: none', id: 'attachment_image'}
+	.form-group
+		%label{for: 'attachment_gif'}='Gif Url'
+		%input{type: 'text', name: 'gif', id: 'attachment_gif', class: 'form-control'}
+	.form-group
+		%label{for: 'attachment_link'}="Link to source"
+		%input{type: 'text', name: 'link', id: 'attachment_link', class: 'form-control'}
+	.form-group
+		%label{for: 'attachment_embedded_html'}='embedded html'
+		%textarea{row: 3, name: 'embedded_html' id: 'attachment_embedded_html', class: 'form-control'}
+
+:javascript
+	$('#attachment_gif').on('change', function(event){
+		url = $(this).val();
+		// $('#attachment_image').attr('src', url);
+	});

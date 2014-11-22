@@ -1,0 +1,58 @@
+.row
+	.col-md-11.image_wrapper{style: "text-align: center"}
+		%img.file_image.img-thumbnail{src: "/files/show_image?file=#{context.file.get('path')}"}
+	.col-md-1.image_manipulation
+		%a.btn.btn-default.rotate_left{href: '#'} != context.helper.icon_tag('rotate-left')
+		%a.btn.btn-default.rotate_right{href: '#'} != context.helper.icon_tag('rotate-right')
+		%a.btn.btn-default.delete_image{href: '#'} != context.helper.icon_tag('trash-o')
+.clearfix
+:css
+	.image_manipulation a{
+		margin-top: 1em;
+	}
+
+:javascript
+	$('.rotate_left').on('click', function(){
+		AC.Ajax.post("/images/manipulate_image", {action: 'rotate_left', file: "#{context.file.get('path')}"}, {success: function(response){
+			if(response.success){
+				$('.file_image')[0].src="/files/show_image?t="+new Date().getTime()+"&file=#{context.file.get('path')}";
+			}else{
+				AC.alert.error(response.error)
+			}
+		}})
+	});
+
+	$('.rotate_right').on('click', function(){
+		AC.Ajax.post("/images/manipulate_image", {action: 'rotate_right', file: "#{context.file.get('path')}"}, {success: function(response){
+			if(response.success){
+				$('.file_image')[0].src="/files/show_image?t="+new Date().getTime()+"&file=#{context.file.get('path')}";
+			}else{
+				AC.alert.error(response.error)
+			}
+		}})
+	});
+
+	$('.delete_image').on('click', function(){
+		bootbox.confirm("Datei wirklich löschen?", function(res){
+			AC.Ajax.post("/files/delete", {files: "#{context.file.get('path')}"}, { success: function(response){
+				if(response.success){
+					if(AC.filesystem_content.isThereNext()){
+						file = AC.filesystem_content.next();
+					}else if(AC.filesystem_content.isTherePrev()){
+						file = AC.filesystem_content.prev();
+					}else{
+						file =AC.filesystem_content.parent();
+					}
+					AC.filesystem_content.remove(AC.filesystem_content.getCurrent());
+					new AC.Views.FilePreview({model: file})
+				}else{
+					AC.alert.error(response.error)
+				}
+			}});
+		});
+	});
+
+
+	top_offset = $('.file_image').offset().top;
+	$('.file_image').height($(window).height() - top_offset - 20)
+		.css('box-shadow', '2px 2px 4px');

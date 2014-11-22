@@ -1,0 +1,15 @@
+.modal.fade{id: "#{context.id}"}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{type: "button", 'data-dismiss': "modal", 'aria-hidden': "true"}!="&times;"
+        %h4.modal-title= context.title
+      .modal-body!= context.body
+      .modal-footer
+        %button.btn.btn-default{type: "button", "data-dismiss": "modal"}="Schließen"
+        %button.btn.btn-primary{id: "#{context.id}_success", type: "button"}= "Änderungen speichern"
+:javascript
+    $('##{context.id}').on('hidden.bs.modal', function()  {
+            $(this).remove();
+            $('.modal-backdrop').remove();
+    });

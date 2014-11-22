@@ -10,6 +10,17 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
- *= require_self
+ * require_tree .
+ * require_self
  */
+@import "framework_and_overrides";
+@import "font-awesome";
+@import "partials/variables";
+@import "libs/jquery-ui.scss";
+@import "libs/fancytree.scss";
+@import "libs/fullscreenslide.scss";
+@import "partials/mixins";
+@import "flowplayer.scss";
+@import "layout";
+@import "attachment";
+@import "home";

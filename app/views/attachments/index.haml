@@ -1,0 +1,10 @@
+=link_to 'new', '#', class: 'btn btn-default new_attachment'
+
+.attachment_pagination.row
+	=paginate @attachments, params: {controller: 'attachments', action: 'index'}, :theme => 'twitter-bootstrap-3'
+
+.attachments.row
+	=render partial: '/attachments/attachment', collection: @attachments
+
+.attachment_pagination.row
+	=paginate @attachments, params: {controller: 'attachments', action: 'index'}, :theme => 'twitter-bootstrap-3'

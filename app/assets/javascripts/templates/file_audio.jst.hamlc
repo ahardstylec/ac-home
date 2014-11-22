@@ -1,0 +1,10 @@
+%audio.file_audio(controls)
+  %source{src: "/files/stream_file?file=#{context.file.get('path')}", type:"#{context.file.get('mime_type')}"}
+!= context.helper.link_to context.helper.icon_tag('download','download'), path, class: 'download_audio btn btn-default', style: "display: none"
+
+:javascript
+	can_play_string = $('.file_audio')[0].canPlayType("#{context.file.get('mime_type')}").replace(/no/,'')
+	if(_.isEmpty(can_play_string)){
+		$('.file_audio').hide()
+		$('.download_audio').show()
+	}

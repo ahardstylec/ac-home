@@ -1,0 +1,25 @@
+=link_to icon_tag('trash-o'), '#', class: 'delete_attachment btn btn-default', 'data-id' => @attachment.id
+=link_to icon_tag('pencil'), '#', class: 'edit_attachment btn btn-default', 'data-id' => @attachment.id
+
+.attachment.row{id: "attachment_#{@attachment.id}"}
+	.col-md-6.attachment_image_show
+		-if @attachment.remote_url =~ /webm|/
+			%video{autoplay: "autoplay", loop: "loop", style: 'width: 100%'}
+				%source{src: @attachment.remote_url}
+		-elsif @attachment.remote_url =~ /mp4/
+			%video{autoplay: "autoplay", loop: "loop", style: 'width: 100%'}
+				%source{src: @attachment.remote_url}
+		-else
+			=image_tag(@attachment.original_url, class: 'img-rounded col-md-12')
+	.col-md-6.attachment_link_show
+		-if @attachment.embedded_html?
+			.embedded
+				-if @attachment.embedded_html.include?("iframe")
+					=@attachment.embedded_html.html_safe
+					:javascript 
+						$('.embedded').find('iframe').removeAttr('width').addClass('col-md-12')
+				-else
+					%iframe.col-md-12{height: "360", frameborder: "0", src: @attachment.embedded_html}
+			=link_to @attachment.link, @attachment.link, target: '_blank'
+		-else
+			=link_to @attachment.link, @attachment.link, target: '_blank'

@@ -13,9 +13,41 @@ gem 'spring',        group: :development
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'devise-i18n'
+gem 'sprockets-rails', ">= 2.1.4"
 gem 'haml-rails'
 gem 'therubyracer', :platform=>:ruby
 gem 'thin'
+
+# Extra GEMS ##############
+
+#gem 'coffee-script'
+gem 'yuicompressor'
+gem 'parallel'
+gem 'peach'
+gem 'haml-coffee'
+gem 'mime-types'
+gem 'rubyzip'
+gem 'rmagick'
+gem 'paperclip'
+gem 'streamio-ffmpeg'
+gem 'curb'  #  system packages required libcurl3 libcurl3-gnutls libcurl4-openssl-dev
+
+gem 'kaminari' #, :require => 'kaminari/sinatra'
+#gem 'actionpack', '4.0.4'
+
+gem 'bzip2-ruby', :git => 'https://github.com/chewi/bzip2-ruby.git' # systempackages required libzip2-dev libzip2
+gem 'haml_coffee_assets'
+gem 'execjs'
+gem 'ruby-progressbar'
+gem 'yui-compressor'
+gem 'awesome_print', require: 'awesome_print'
+
+
+
+###########################
+
+
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]

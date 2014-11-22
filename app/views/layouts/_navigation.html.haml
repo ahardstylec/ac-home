@@ -7,7 +7,17 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      = link_to 'Home', root_path, class: 'navbar-brand'
+      =link_to Rails.application.config.hostname, root_path, :class => 'navbar-brand', :title => 'Rails Admin'
     .collapse.navbar-collapse
       %ul.nav.navbar-nav
         = render 'layouts/navigation_links'
+
+      %ul.nav.navbar-nav.navbar-right.navbar-collapse
+        %li=link_to icon_tag('share-square-o'), shared_folders_path, :title => "Freigegebene Dateien verwalten", 'data-toggle'=> "tooltip", 'data-placement'=>"bottom"
+        -if current_user.admin?
+          %li=link_to icon_tag(:gears), admin_path, :title => "Settings", 'data-toggle'=> "tooltip", 'data-placement'=>"bottom"
+
+        %li=link_to icon_tag(:user), edit_user_path(current_user.id), :title => "#{pat(:profile)}", 'data-toggle'=> "tooltip", 'data-placement'=>"bottom"
+        %li=link_to icon_tag('sign-out'), destroy_user_session_path, method: :delete, 'data-toggle'=> "tooltip", 'data-placement'=>"bottom", title: 'ausloggen'
+      :javascript
+            $('ul.nav a').tooltip()

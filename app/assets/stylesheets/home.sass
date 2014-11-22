@@ -1,0 +1,72 @@
+.filesystem_content
+	overflow-y: auto
+	@include calc( height, '100% - 70px')
+	.fancytree-selected
+		span.fancytree-title
+			background-color: rgba(78, 73, 242, 0.7) !important
+
+.breadcrumb > li + li:before 
+	content: "/"
+
+.load_content
+	display: -webkit-box
+	display: -moz-box
+	display: box
+	width: 100%
+
+	-webkit-box-orient: block-axis
+	-moz-box-orient: block-axis
+	box-orient: block-axis
+
+	-webkit-box-align: center
+	-moz-box-align: center
+	box-align: center
+
+	-webkit-box-pack: center
+	-moz-box-pack: center
+	box-pack: center
+
+.file_video
+	width: auto
+
+.disabled
+	pointer-events: none
+	&:hover
+		cursor: default
+	i
+		color: grey
+
+.hide
+	display: none
+
+.folder_content
+	overflow: hidden
+	table
+		thead 
+			display: table
+			table-layout: fixed
+			width: 100%
+		tbody 
+			display: block
+			overflow-y: scroll
+		
+			tr
+				display: table
+				table-layout: fixed
+				width: 100%
+				&:hover
+					cursor: pointer
+			tr.ui-selected
+				> td, th
+					background-color: rgba(78, 73, 242, 0.6) !important
+			
+			tr.ui-selecting
+				> td, th 
+					background-color: rgba(78, 73, 242, 0.2) !important
+
+		th, td
+			width: auto
+			text-align: right
+			// border: 1px solid
+		
+	// @include calc( height, '100% - 120px')
